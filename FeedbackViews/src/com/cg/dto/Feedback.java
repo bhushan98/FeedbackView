@@ -91,6 +91,14 @@ public class Feedback {
 	
 	public Feedback() {
 	}
+	@Override
+	public String toString() {
+		return "Feedback [startDate=" + startDate + ", endDate=" + endDate + ", trainingCode=" + trainingCode
+				+ ", facultyName=" + facultyName + ", participantName=" + participantName
+				+ ", presentationCommunication=" + presentationCommunication + ", clarifyDoubts=" + clarifyDoubts
+				+ ", timeManagement=" + timeManagement + ", handOuts=" + handOuts + ", hwswNetwork=" + hwswNetwork
+				+ "]";
+	}
 	
 	
 }
