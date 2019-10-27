@@ -7,16 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cg.dto.Feedback;
+import com.cg.dto.FeedbackParameters;
+import com.cg.dto.FeedbackReport;
 import com.cg.exception.FeedbackNotFoundException;
 
-public class FeedbackDaoImpl implements FeedbackDao {
+public class FeedbackReportDaoImpl implements FeedbackReportDao {
 
 	@Override
-	public List<Feedback> byMonth(int month) throws FeedbackNotFoundException {
+	public List<FeedbackReport> byMonth(int month) throws FeedbackNotFoundException {
 		Connection conn = null;
-		List<Feedback> feedback = new ArrayList<Feedback>();
-		Feedback f;
+		List<FeedbackReport> feedback = new ArrayList<FeedbackReport>();
+		FeedbackReport f;
 		
 		try {
 			conn = JdbcUtil.getConnection();
@@ -24,7 +25,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
 			stmt.setInt(1, month);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
-				f = new Feedback();
+				f = new FeedbackReport();
 				f.setTrainingCode(rs.getInt(1));
 				f.setStartDate(rs.getDate(2));
 				f.setEndDate(rs.getDate(3));
@@ -49,10 +50,10 @@ public class FeedbackDaoImpl implements FeedbackDao {
 	}
 
 	@Override
-	public List<Feedback> byFacultyForMonth(int facultyCode, int month) throws FeedbackNotFoundException {
+	public List<FeedbackReport> byFacultyForMonth(int facultyCode, int month) throws FeedbackNotFoundException {
 		Connection conn = null;
-		List<Feedback> feedback = new ArrayList<Feedback>();
-		Feedback f;
+		List<FeedbackReport> feedback = new ArrayList<FeedbackReport>();
+		FeedbackReport f;
 		
 		try {
 			conn = JdbcUtil.getConnection();
@@ -61,7 +62,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
 			stmt.setInt(2, facultyCode);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
-				f = new Feedback();
+				f = new FeedbackReport();
 				f.setTrainingCode(rs.getInt(1));
 				f.setStartDate(rs.getDate(2));
 				f.setEndDate(rs.getDate(3));
@@ -85,18 +86,18 @@ public class FeedbackDaoImpl implements FeedbackDao {
 	}
 
 	@Override
-	public List<Feedback> feedbackDefaultersByMonth(int month) throws FeedbackNotFoundException {
+	public List<FeedbackReport> feedbackDefaultersByMonth(int month) throws FeedbackNotFoundException {
 		Connection conn = null;
-		List<Feedback> feedback = new ArrayList<Feedback>();
-		Feedback f;
+		List<FeedbackReport> feedback = new ArrayList<FeedbackReport>();
+		FeedbackReport f;
 		
 		try {
 			conn = JdbcUtil.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(byMonth);
+			PreparedStatement stmt = conn.prepareStatement(feedbackDefaulters);
 			stmt.setInt(1, month);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
-				f = new Feedback();
+				f = new FeedbackReport();
 				f.setTrainingCode(rs.getInt(1));
 				f.setStartDate(rs.getDate(2));
 				f.setEndDate(rs.getDate(3));
@@ -114,6 +115,57 @@ public class FeedbackDaoImpl implements FeedbackDao {
 			}
 			return feedback;
 				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public FeedbackParameters getAvgByMonth(int month) {
+		Connection conn = null;
+		FeedbackParameters fp = null;
+		
+		try {
+			conn = JdbcUtil.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(avgByMonth);
+			stmt.setInt(1, month);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				fp = new FeedbackParameters();
+				fp.setPresentationCommunication(rs.getDouble(1));
+				fp.setClarifyDoubts(rs.getDouble(2));
+				fp.setTimeManagement(rs.getDouble(3));
+				fp.setHandOuts(rs.getDouble(4));
+				fp.setHwswNetwork(rs.getDouble(5));
+			}
+				return fp;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public FeedbackParameters getAvgByMonthAndFaculty(int month, int facultyCode) {
+		Connection conn = null;
+		FeedbackParameters fp = null;
+		
+		try {
+			conn = JdbcUtil.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(avgByFacultyAndMonth);
+			stmt.setInt(1, month);
+			stmt.setInt(2, facultyCode);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				fp = new FeedbackParameters();
+				fp.setPresentationCommunication(rs.getDouble(1));
+				fp.setClarifyDoubts(rs.getDouble(2));
+				fp.setTimeManagement(rs.getDouble(3));
+				fp.setHandOuts(rs.getDouble(4));
+				fp.setHwswNetwork(rs.getDouble(5));
+			}
+			return fp;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

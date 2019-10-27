@@ -2,7 +2,7 @@ package com.cg.dto;
 
 import java.sql.Date;
 
-public class Feedback {
+public class FeedbackReport {
 	private Date startDate;
 	private Date endDate;
 	private int trainingCode;
@@ -10,8 +10,11 @@ public class Feedback {
 	private String participantName;
 	private int presentationCommunication;
 	private int clarifyDoubts;
+	private int timeManagement;
+	private int handOuts;
+	private int hwswNetwork;
 	
-	public Feedback(Date startDate, Date endDate, int trainingCode, String facultyName, String participantName,
+	public FeedbackReport(Date startDate, Date endDate, int trainingCode, String facultyName, String participantName,
 			int presentationCommunication, int clarifyDoubts, int timeManagement, int handOuts, int hwswNetwork) {
 		super();
 		this.startDate = startDate;
@@ -31,9 +34,7 @@ public class Feedback {
 	public void setParticipantName(String participantName) {
 		this.participantName = participantName;
 	}
-	private int timeManagement;
-	private int handOuts;
-	private int hwswNetwork;
+	
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -89,16 +90,12 @@ public class Feedback {
 		this.hwswNetwork = hwswNetwork;
 	}
 	
-	public Feedback() {
+	public FeedbackReport() {
 	}
 	@Override
 	public String toString() {
-		return "Feedback [startDate=" + startDate + ", endDate=" + endDate + ", trainingCode=" + trainingCode
-				+ ", facultyName=" + facultyName + ", participantName=" + participantName
-				+ ", presentationCommunication=" + presentationCommunication + ", clarifyDoubts=" + clarifyDoubts
-				+ ", timeManagement=" + timeManagement + ", handOuts=" + handOuts + ", hwswNetwork=" + hwswNetwork
-				+ "]";
+		return startDate +"\t"+ endDate +"\t\t"+  trainingCode +"\t\t"+ facultyName +"\t\t"+ participantName
+				+"\t\t\t"+ presentationCommunication +"\t\t"+ clarifyDoubts +"\t\t"+ timeManagement +"\t\t"+ handOuts +"\t\t"+ hwswNetwork;
 	}
-	
 	
 }
